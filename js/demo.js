@@ -1,6 +1,1 @@
-const operators = ["+", "-", "*", "/"]
-
-function isLastInputOperator( expression ) {
-    return operators.includes(expression[expression.length-1]);
-}
-
+console.log(eval("6"))
