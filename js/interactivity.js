@@ -35,14 +35,22 @@ document.querySelector(".btnDel").addEventListener("click", () => {
 })
 
 document.querySelector(".btnEqual").addEventListener("click", () => {
-    console.log(validateEquation())
-    document.querySelector("p").innerHTML = eval(validateEquation())
+    let results = validateEquation();
+    document.querySelector(".result").innerHTML = results !== undefined ? eval(validateEquation()) : "";
 })
 
 document.querySelector(".btnDot").addEventListener("click", function () {
     let text = document.querySelector("p").innerText;
     if (text[text.length-1] !== "." && !lastValue(text).includes("."))
     document.querySelector("p").innerHTML += ".";
+})
+
+document.querySelector(".btnX").addEventListener("click", () => {
+    document.querySelector("p").innerHTML += "X";
+})
+
+document.querySelector(".btnX2").addEventListener("click", () => {
+    document.querySelector("p").innerHTML += "X<sup>2</sup>";
 })
 
 function isLastInputOperator( expression ) {
