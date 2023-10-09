@@ -19,7 +19,14 @@ document.querySelector(".btnC").addEventListener("click", () => {
 
 for ( let i=0; i<4; i++ ) {
     document.querySelector(".btn"+operators[i]).addEventListener("click", () => {
-        document.querySelector("p").innerHTML += operator[operators[i]];
+        let input = document.querySelector(".equation").innerText;
+        console.log(input)
+        if ( "+-×÷".includes(input[input.length-1]) ) {
+            input = input.slice(0, input.length-1) + operator[operators[i]];
+            document.querySelector("p").innerHTML = input;
+        } else {
+            document.querySelector("p").innerHTML += operator[operators[i]];
+        }
     });
 }
 
@@ -51,6 +58,12 @@ document.querySelector(".btnX").addEventListener("click", () => {
 
 document.querySelector(".btnX2").addEventListener("click", () => {
     document.querySelector("p").innerHTML += "X<sup>2</sup>";
+})
+
+document.querySelector(".btnComma").addEventListener("click", () => {
+    let text = document.querySelector("p").innerText;
+    if (text[text.length-1] !== ",")
+    document.querySelector("p").innerHTML += ",";
 })
 
 function isLastInputOperator( expression ) {
