@@ -9,12 +9,12 @@ const button = document.querySelector("button"),
 
 for ( let i=0; i<10; i++ ) {
     document.querySelector(".btn"+i).addEventListener("click", () => {
-        document.querySelector("p").innerHTML += i;
+        document.querySelector(".equation").innerHTML += i;
     })
 }
 
 document.querySelector(".btnC").addEventListener("click", () => {
-    document.querySelector("p").innerHTML = "";
+    document.querySelector(".equation").innerHTML = "";
 })
 
 for ( let i=0; i<4; i++ ) {
@@ -43,13 +43,29 @@ document.querySelector(".btnDel").addEventListener("click", () => {
 
 document.querySelector(".btnEqual").addEventListener("click", () => {
     let results = validateEquation();
-    document.querySelector(".result").innerHTML = results !== undefined ? eval(validateEquation()) : "";
+
+    if (results.includes("=") || results.includes(",")) {
+        alert("Click 'sol' to solve equation");
+    } else if (results.includes("X")) {
+        document.querySelector("p").innerHTML += "=";
+    } else {
+        document.querySelector(".result").innerHTML = results !== undefined ? eval(validateEquation()) : "";
+    }
 })
 
 document.querySelector(".btnDot").addEventListener("click", function () {
     let text = document.querySelector("p").innerText;
     if (text[text.length-1] !== "." && !lastValue(text).includes("."))
     document.querySelector("p").innerHTML += ".";
+})
+
+document.querySelector(".btnSolve").addEventListener("click", function () {
+    let equation = validateEquation();
+    if (equation.includes(",")) {
+        document.querySelector(".result").innerHTML = analyseSequence(getSequence(equation));
+    } else {
+        document.querySelector(".result").innerHTML = solveEquation(equation);
+    }
 })
 
 document.querySelector(".btnX").addEventListener("click", () => {
@@ -84,8 +100,12 @@ function lastValue(equation) {
 
 function validateEquation() {
     let eq = "";
-    const equation = document.querySelector("p").innerText,
+    const equation = document.querySelector(".equation").innerText,
         operatorMapper = { "÷": "/", "×": "*" };
+
+    if (equation.includes("X")) {
+        return xEquation(equation)
+    }
 
     for (let i=0; i<equation.length; i++) {
         if ("÷×".includes(equation[i])) {
@@ -97,4 +117,149 @@ function validateEquation() {
     }
 
     return eq
+}
+
+function xEquation() {
+    let equation = document.querySelector(".equation").innerHTML;
+
+    return equation.replace("<sup>2</sup>", "xx")
+}
+
+// ===============================================================================================================
+
+// Solves for x but the equation must not contain symbols [/,*]
+
+// Returns a list of grouped data
+function extractQuotient (equation) {
+    let quotients = [[], [], []],
+        symb = "/*", expression = "",
+        isAfter = false;
+
+    for (let i=0; i<equation.length; i++) {
+        if (symb.includes(equation[i])) {
+            return null;
+        } else if ( i>0 && "/*+-=".includes(equation[i]) || equation.length-1 == i) {
+            if ( equation.length-1 == i ) {
+                expression += equation[i];
+            }
+
+            if (expression.includes("=")) {
+                expression = expression.slice(1, expression.length)
+            }
+
+            valueAndGroup = getValue(expression, isAfter);
+            quotients[valueAndGroup[1]].push(valueAndGroup[0]);
+            expression = "";
+
+            if (equation[i] === "=") {
+                isAfter = true;
+            }
+        }
+
+        expression += equation[i];
+    }
+
+    return quotients;
+}
+
+function getValue(exp, isAfterEqualSign) {
+    if (exp=="") {
+        return [0, 0]
+    }
+    
+    let value = "", symb="", operators = "/*+-=";;
+    for (let i=0; i<exp.length; i++) {
+        if ((parseInt(exp[i]) + "") === "NaN" && !operators.includes(exp[i]) && exp[i]!=".") {
+            symb += exp[i];
+            continue;
+        }
+
+        value += exp[i];
+    }
+    (value.length === 0) ? value = 1 : (operators.includes(value)) ? value += "1"  : value;
+    let output = [(isAfterEqualSign ? parseFloat(value) * -1 : parseFloat(value)), (symb.length===1 ? 1 : symb.length>1 ? 0 : 2)];
+    return output
+}
+
+function solveEquation(equation) {
+    let coefficients = extractQuotient(equation),
+        a=0, b=0, c=0, count=0;
+
+    console.log(coefficients)
+
+    coefficients.forEach( values => {
+        for (let i=0; i<values.length; i++) {
+            count===0 ? a+=values[i] : count===1 ? b+=values[i] : c+=values[i];
+        }
+        count++;
+    } )
+    
+    return ( a!=0 ) ? (-b+Math.sqrt(Math.pow(b, 2) - 4*a*c))/(2*a) : -c/b;
+}
+
+// ======================================================================================================================================
+// Finding nth term of whatever sequence
+
+function getSequence(equation) {
+    return equation.split(",").map(val => eval(val));
+}
+
+function findSequenceType(seq) {
+    const sequenceTypes = ["linear", "quadratic", "geometric", "invalid"],
+          diff = seq[1]-seq[0], ratio = seq[1]/seq[0];
+    let hasConstDiff = true, hasConstRatio = true, hasConstSecDiff = true, firstDiffs = [];
+
+    for (let i=1; i<seq.length; i++) {
+        if (diff != seq[i]-seq[i-1] && hasConstDiff) {
+            hasConstDiff = false;
+        } else if ( ratio != seq[i]/seq[i-1] && hasConstRatio ) {
+            hasConstRatio = false;
+        }
+
+        firstDiffs.push(seq[i]-seq[i-1]);
+    }
+    
+    const secDiff = firstDiffs[1] - firstDiffs[0];
+    if (firstDiffs.length>=3) {
+        for (let i=1; i<firstDiffs.length; i++) {
+            if ( secDiff != firstDiffs[i]-firstDiffs[i-1]) {
+                hasConstSecDiff = false;
+                break;
+            }
+        }
+    } else {
+        hasConstSecDiff = false;
+    }
+
+    return hasConstDiff ? sequenceTypes[0] : hasConstRatio ? sequenceTypes[2] : 
+            hasConstSecDiff ? sequenceTypes[1] : sequenceTypes[3]
+}
+
+function analyseSequence(seq) {
+    const stringValue = (val) => {
+        if (val>=0) {
+            return "+" + val
+        }
+        return val
+    }
+    if (seq.length < 3) {
+        return "Insufficient data to conclude";
+    } 
+    
+    switch (findSequenceType(seq)) {
+        case "linear":
+            const d = seq[1]-seq[0],
+                  sequence = (d + "n") + stringValue(seq[0]-d);
+            return sequence
+        case "geometric":
+            const r = seq[1]/seq[0];
+            return `${seq[0]}(${r})<sup>n-1</sup>`;
+        case "quadratic":
+            let a = ((seq[2]-seq[1]) - (seq[1]-seq[0]))/2,
+                  b = (seq[1]-seq[0]) - 3*a ,
+                  c = seq[0] - a - b;
+            return `${a}n<sup>2</sup>${stringValue(b)}n${stringValue(c)}`
+        default:
+            return "seq not linear, geometric or quadratic"
+    }
 }
