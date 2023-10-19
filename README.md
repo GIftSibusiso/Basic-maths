@@ -37,3 +37,6 @@ Create a pull request against the upstream repository.
 
 If you have any questions or feedback about the calculator project, please feel free to contact the author at nkabinde17sibusiso@gmail.com
 
+### Known code issues:
+DOM is a bit messy.
+Code undocumented.
