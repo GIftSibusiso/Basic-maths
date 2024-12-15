@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div>
+        <table id="calculator">
+            <tr>
+                <td colspan="3" class="displayEq"><span class="equation"></span></td>
+                <td><button class="btnC">C</button></td>
+            </tr>
+            <tr>
+                <td colspan="3" class="displayRes"><span class="result"></span></td>
+                <td><button class="btnDel">Del</button></td>
+            </tr>
+            <tr>
+                <td><button class="btnSolve">sol</button></td>
+                <td><button class="btnX">X</button></td>
+                <td><button class="btnX2">X<sup>2</sup></button></td>
+                <td colspan="2"><button class="btnComma">,</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn9">9</button></td>
+                <td><button class="btn8">8</button></td>
+                <td><button class="btn7">7</button></td>
+                <td colspan="2"><button class="btnDivide">÷</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn6">6</button></td>
+                <td><button class="btn5">5</button></td>
+                <td><button class="btn4">4</button></td>
+                <td colspan="2"><button class="btnMult">x</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn3">3</button></td>
+                <td><button class="btn2">2</button></td>
+                <td><button class="btn1">1</button></td>
+                <td colspan="2"><button class="btnMinus">-</button></td>
+            </tr>
+            <tr>
+                <td><button class="btnDot">.</button></td>
+                <td><button class="btn0">0</button></td>
+                <td><button class="btnEqual">=</button></td>
+                <td colspan="2"><button class="btnPlus">+</button></td>
+            </tr>
+        </table>
+    </div>
+    <div class="manual">
+        <h2>Calculator Guide</h2>
+        <p>This calculator allows you to perform basic arithmetic, solve linear and quadratic equations, and find the general formula for a sequence. Follow the instructions below to utilize its features:</p>
+
+        <h3>Solving for x in Linear Equations</h3>
+        <ol>
+            <li>Enter the equation in the form <code>ax + b = c</code> (e.g., <code>2x + 3 = 7</code>).</li>
+            <li>Click the <b>sol</b> button.</li>
+            <li>The solution for <code>x</code> will appear in the result field.</li>
+        </ol>
+
+        <h3>Solving Quadratic Equations</h3>
+        <ol>
+            <li>Enter the equation in the form <code>ax^2 + bx + c = 0</code> (e.g., <code>x^2 - 3x + 2 = 0</code>).</li>
+            <li>Click the <b>sol</b> button.</li>
+            <li>The calculator will display the solutions for <code>x</code>.</li>
+        </ol>
+
+        <h3>Finding the General Formula for a Sequence</h3>
+        <ol>
+            <li>Input a sequence of numbers separated by commas (e.g., <code>2, 4, 6, 8</code>).</li>
+            <li>Click the <b>sol</b> button.</li>
+            <li>The calculator will provide the general formula (<code>Tn</code>) for the sequence.</li>
+        </ol>
+
+        <h3>Buttons Explanation</h3>
+        <ul>
+            <li><b>C</b>: Clears all input.</li>
+            <li><b>Del</b>: Deletes the last character entered.</li>
+            <li><b>sol</b>: Solves equations or sequences.</li>
+            <li><b>X</b>, <b>X²</b>: Used to define variables in equations.</li>
+            <li><b>=</b>: Calculates results for arithmetic operations.</li>
+        </ul>
+
+        <h3>Examples</h3>
+        <ul>
+            <li><b>Linear Equation:</b> Enter <code>3x + 5 = 11</code>, click <b>sol</b>, result: <code>x = 2</code>.</li>
+            <li><b>Quadratic Equation:</b> Enter <code>x^2 - 5x + 6 = 0</code>, click <b>sol</b>, result: <code>x = 2</code> and <code>x = 3</code>.</li>
+            <li><b>Sequence:</b> Enter <code>3, 6, 9, 12</code>, click <b>sol</b>, result: General Formula: <code>Tn = 3n</code>.</li>
+        </ul>
+
+        <p>Start solving equations and sequences effortlessly!</p>
+    </div>
+    <script src="js/interactivity.js"></script>
+</body>
+</html>

@@ -194,6 +194,7 @@ function extractCoefficients (equation) {
     return quotients;
 }
 
+
 function getValue(exp, isAfterEqualSign) {
     if (exp=="") {
         return [0, 0]
@@ -212,6 +213,7 @@ function getValue(exp, isAfterEqualSign) {
     let output = [(isAfterEqualSign ? parseFloat(value) * -1 : parseFloat(value)), (symb.length===1 ? 1 : symb.length>1 ? 0 : 2)];
     return output
 }
+
 
 function solveEquation(equation) {
     let coefficients = extractCoefficients(equation),
@@ -240,6 +242,7 @@ function solveEquation(equation) {
 function getSequence(equation) {
     return equation.split(",").map(val => eval(val));
 }
+
 
 function findSequenceType(seq) {
     const sequenceTypes = ["linear", "quadratic", "geometric", "invalid"],
@@ -271,6 +274,7 @@ function findSequenceType(seq) {
     return hasConstDiff ? sequenceTypes[0] : hasConstRatio ? sequenceTypes[2] : 
             hasConstSecDiff ? sequenceTypes[1] : sequenceTypes[3]
 }
+
 
 function analyseSequence(seq) {
     const stringValue = (val) => {
